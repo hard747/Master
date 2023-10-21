@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  realsense-ready:
+    container_name: orb-slam-container  # Reemplaza <container> con un nombre válido
+    image: lmwafer/orb-slam2-ready:1.2-ubuntu18.04
+    restart: always
+    privileged: true
+    ports:
+      - "8086:8086"                      
+    environment:
+      - DISPLAY=$DISPLAY                  
+      - QT_X11_NO_MITSHM=1                
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix     
+    stdin_open: true                      
+    tty: true                             
+
+    deploy:                               
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0']             
+            capabilities: [gpu]
